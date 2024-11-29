@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Text, View, Button, Image } from 'react-native';
+import { Text, View, Button, Image, Alert } from 'react-native';
 import { Camera, useCameraDevice } from 'react-native-vision-camera';
+import RNFS from 'react-native-fs'; // File System for saving photos locally
 
 const CameraScreen = () => {
   const [cameraPermission, setCameraPermission] = useState(null);
@@ -54,9 +55,19 @@ const CameraScreen = () => {
     }
   };
 
-  const confirmPhoto = () => {
-    console.log('Photo confirmed:', capturedPhoto);
-    setShowPreview(false); // Exit preview mode
+  // Save photo to local storage
+  const savePhotoToLocal = async () => {
+    try {
+      const destinationPath = `${RNFS.DocumentDirectoryPath}/photo_${Date.now()}.jpg`;
+      await RNFS.copyFile(capturedPhoto, destinationPath);
+      Alert.alert('Success', `Photo saved to: ${destinationPath}`);
+      console.log('Photo saved to:', destinationPath);
+      setShowPreview(false); // Exit preview mode
+      setCapturedPhoto(null); // Clear the captured photo
+    } catch (error) {
+      console.error('Error saving photo:', error);
+      Alert.alert('Error', 'Failed to save photo.');
+    }
   };
 
   const retakePhoto = () => {
@@ -74,16 +85,17 @@ const CameraScreen = () => {
         ref={camera} // Pass useRef to Camera
         photo={true} // Enable photo capturing
       />
+
       {/* Preview and Controls */}
       {showPreview && capturedPhoto ? (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}>
           <Image
             source={{ uri: capturedPhoto }}
-            style={{ width: 300, height: 300, marginBottom: 20 }}
+            style={{ width: 300, height: 300, marginBottom: 20, borderRadius: 10 }}
           />
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%' }}>
             <Button title="Retake" onPress={retakePhoto} />
-            <Button title="Confirm" onPress={confirmPhoto} />
+            <Button title="Save Photo" onPress={savePhotoToLocal} />
           </View>
         </View>
       ) : (

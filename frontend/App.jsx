@@ -16,6 +16,7 @@ const Stack = createNativeStackNavigator();
 
 function HomeStack() {
   return (
+
     <Stack.Navigator>
       <Stack.Screen 
         name="Home" 

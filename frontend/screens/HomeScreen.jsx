@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#1E2A78', // Primary blue color
+    color: '#431b42', // Primary blue color
   },
   itemCategory: {
     fontSize: 14,
