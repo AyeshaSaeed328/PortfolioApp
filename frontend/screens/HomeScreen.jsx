@@ -52,7 +52,7 @@ const HomeScreen = () => {
 
   // Function to open the website
   const openWebsite = () => {
-    Linking.openURL('https://habib.edu.pk/dukaan/').catch(err => console.error('Failed to open URL:', err));
+    Linking.openURL('https://hu-dukaan-2050a.web.app/').catch(err => console.error('Failed to open URL:', err));
   };
 
   return (
@@ -68,7 +68,7 @@ const HomeScreen = () => {
           <View style={styles.imageContainer}>
             {/* Local Image from assets folder */}
             <Image
-              source={require('../assets/hu_logo.jpg')} // Load the local image from assets
+              source={require('../assets/hu_logo.png')} // Load the local image from assets
               style={styles.image}
             />
           </View>
